@@ -1,0 +1,21 @@
+yarnPath: .yarn/releases/yarn-3.2.1.cjs
+nodeLinker: "node-modules"
+npmRegistryServer: "http://${PACKAGE_REPO_DOMAIN}:4873"
+httpRetry: 10
+httpTimeout: 10000
+# networkConcurrency: 2
+unsafeHttpWhitelist: 
+  - "0.0.0.0"
+  - localhost
+  - verdaccio
+  - host.minikube.internal
+  - host.docker.internal
+  - "127.0.0.1"
+  - registry.yarnpkg.com
+npmRegistries:
+  "http://${PACKAGE_REPO_DOMAIN}:4873":
+    npmAlwaysAuth: true
+    npmAuthToken: ${NPM_TOKEN}
+logFilters:
+  - level: "info"
+    pattern: "*"

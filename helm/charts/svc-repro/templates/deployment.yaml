@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "min-repro"
+  labels:
+    app: "min-repro"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "min-repro"
+  template:
+    metadata:
+      labels: 
+        app: "min-repro"
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec: 
+      containers:
+      - name: "min-repro"
+        image: "{{ .Values.imageKey }}"
+        imagePullPolicy: "Never"
+        # this doesnt exist in this min reproduction but it never gets this far so doesn't matter
+        command: [ "yarn", "run", "start:dev" ]
+        ports: 
+          - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "min-repro"
+  labels:
+    app: "min-repro"
+    service: "min-repro"
+spec:
+  selector: 
+    app: "min-repro"
+  ports:
+    - port: 3000
+      name: 'http'
+

@@ -1,0 +1,8 @@
+apiVersion: v2		# helm version
+version: 0.1.0 	# chart version
+appVersion: "0.1.1" 	# app version
+type: application
+name: "svc-min-reproduction"
+description: Min Repro Service
+kubeVersion: '>= 1.23.0-0'
+

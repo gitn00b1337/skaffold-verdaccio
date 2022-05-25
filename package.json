@@ -1,0 +1,12 @@
+{
+  "name": "microservices-repo",
+  "packageManager": "yarn@3.2.1",
+  "private": true,
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.3",
+    "graphql": "^15.8.0"
+},
+  "workspaces": [
+    "svc-*"
+  ]
+}

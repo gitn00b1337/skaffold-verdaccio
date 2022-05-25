@@ -1,0 +1,42 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+build:
+  local:
+    push: false
+  artifacts:
+  - image: svc-repro
+    docker:
+      dockerfile: ./svc-repro/Dockerfile
+      target: dev
+      # this let skaffold build work:
+      network: "host"
+      buildArgs:
+        # can set up token here if theres an issue: https://verdaccio.org/docs/installation
+        NPM_TOKEN: "config_set_to_open_for_min_repro" 
+        PACKAGE_REPO_DOMAIN: "host.minikube.internal"
+    context: .
+
+# portForward:
+#   - resourceType: container
+#     resourceName: svc-repro
+#     namespace: default
+#     address: "host.docker.internal"
+#     port: 4873
+#     localPort: 4873
+
+deploy:
+  kubeContext: minikube
+  helm:
+    releases:
+      - name: svc-repro
+        chartPath: helm/charts/svc-repro
+        artifactOverrides:
+          imageKey: svc-repro
+        imageStrategy:
+          fqn: {}
+
+profiles:
+  - name: minikube
+    activation:
+      - kubeContext: minikube
+        command: dev
